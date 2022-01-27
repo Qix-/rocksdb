@@ -1487,7 +1487,7 @@ PosixDirectory::~PosixDirectory() { close(fd_); }
 IOStatus PosixDirectory::Fsync(const IOOptions& /*opts*/,
                                IODebugContext* /*dbg*/) {
 #ifndef OS_AIX
-  if (fsync(fd_) == -1) {
+  if (fsync(fd_) == -1 && errno != EINVAL) {
     return IOError("While fsync", "a directory", errno);
   }
 #endif
